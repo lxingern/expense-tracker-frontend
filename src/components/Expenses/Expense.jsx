@@ -22,7 +22,7 @@ const Expense = (props) => {
     }
     props.editExpense(expenseDateWithId)
 
-    // setEditFormShown(false)
+    setEditFormShown(false)
   }
 
   const deleteExpenseHandler = () => {

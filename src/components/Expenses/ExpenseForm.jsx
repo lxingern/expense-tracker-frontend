@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const ExpenseForm = (props) => {
   const amountRef = useRef()
@@ -6,6 +6,10 @@ const ExpenseForm = (props) => {
   const dateRef = useRef()
   const descriptionRef = useRef()
   let currAmount = "", currCategory = "", currDate = "", currDescription = ""
+  const [amountIsValid, setAmountIsValid] = useState(true)
+  const [dateIsValid, setDateIsValid] = useState(true)
+  let formIsValid = amountIsValid && dateIsValid
+  let formSubmitted = useRef(false)
 
   if (props.mode === "edit") {
     currAmount = props.expense.amount;
@@ -14,26 +18,44 @@ const ExpenseForm = (props) => {
     currDescription = props.expense.description;
   }
 
+  useEffect(() => {
+    if (formSubmitted.current & formIsValid) {
+      const expenseData = {
+        amount: amountRef.current.value,
+        category: categoryRef.current.value,
+        date: dateRef.current.value,
+        description: descriptionRef.current.value
+      }
+  
+      if (props.mode === "new") {
+        props.createExpense(expenseData)
+      } else if (props.mode === "edit") {
+        props.editExpense(expenseData)
+      }
+  
+      amountRef.current.value = ""
+      categoryRef.current.value = ""
+      dateRef.current.value = ""
+      descriptionRef.current.value = ""
+    }
+    formSubmitted.current = false
+  }, [formSubmitted, formIsValid])
+
   const submitHandler = (e) => {
     e.preventDefault()
+    formSubmitted.current = true
 
-    const expenseData = {
-      amount: amountRef.current.value,
-      category: categoryRef.current.value,
-      date: dateRef.current.value,
-      description: descriptionRef.current.value
+    if (amountRef.current.value.length === 0 || +amountRef.current.value < 0) {
+      setAmountIsValid(false)
+    } else {
+      setAmountIsValid(true)
     }
 
-    if (props.mode === "new") {
-      props.createExpense(expenseData)
-    } else if (props.mode === "edit") {
-      props.editExpense(expenseData)
+    if (dateRef.current.value.length === 0) {
+      setDateIsValid(false)
+    } else {
+      setDateIsValid(true)
     }
-
-    amountRef.current.value = ""
-    categoryRef.current.value = ""
-    dateRef.current.value = ""
-    descriptionRef.current.value = ""
   }
 
   return (
@@ -42,6 +64,7 @@ const ExpenseForm = (props) => {
         <div className="col">
           <label htmlFor="amount" className="form-label">Amount</label>
           <input name="amount" id="amount" type="number" step="0.01" className="form-control" defaultValue={currAmount} ref={amountRef} />
+          {!amountIsValid && <span className="text-danger">Amount cannot be blank or negative.</span>}
         </div>
 
         <div className="col">
@@ -59,6 +82,7 @@ const ExpenseForm = (props) => {
         <div className="col">
           <label htmlFor="date" className="form-label">Date</label>
           <input name="date" id="date" type="date" className="form-control" ref={dateRef} defaultValue={currDate} />
+          {!dateIsValid && <span className="text-danger">Date cannot be blank.</span>}
         </div>
 
         <div className="col">
