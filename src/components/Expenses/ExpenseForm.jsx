@@ -59,7 +59,7 @@ const ExpenseForm = (props) => {
   }
 
   return (
-    <form className="mb-2" onSubmit={submitHandler}>
+    <form className="p-3 bg-body-secondary" onSubmit={submitHandler}>
       <div className="row mb-3">
         <div className="col">
           <label htmlFor="amount" className="form-label">Amount</label>

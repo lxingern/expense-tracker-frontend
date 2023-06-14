@@ -4,11 +4,15 @@ import ExpenseList from '../components/Expenses/ExpensesList';
 import { useCallback, useEffect, useState } from 'react';
 import { getAuthToken } from '../util/auth';
 import { useNavigate } from 'react-router-dom';
+import Filters from '../components/Expenses/Filters';
 
 const ExpensesPage = () => {
   const navigate = useNavigate()
-  const [expenses, setExpenses] = useState([]);
+  const [expenses, setExpenses] = useState([])
   const [totalExpenses, setTotalExpenses] = useState(0)
+  const [startDate, setStartDate] = useState()
+  const [endDate, setEndDate] = useState()
+  const [categories, setCategories] = useState([])
   const [loaded, setLoaded] = useState(false)
 
   const loadExpenses = useCallback(async () => {
@@ -24,6 +28,9 @@ const ExpensesPage = () => {
       const resData = await response.json()
       setExpenses(resData.expenses)
       setTotalExpenses(resData.totalAmount)
+      setStartDate(resData.startDate)
+      setEndDate(resData.endDate)
+      setCategories(resData.categories)
       setLoaded(true)
     } else {
       return navigate('/signin')
@@ -90,7 +97,9 @@ const ExpensesPage = () => {
           <div className="custom-container mx-auto">
             <h1 className="text-center fs-1 fw-bold my-5">Expense Tracker</h1>
             <ExpenseForm mode="new" createExpense={createExpenseHandler} />
-            <div className="fs-3 fw-semibold mt-5 mb-3">Total Expenses: ${totalExpenses.toFixed(2)}</div>
+            <Filters/>
+            {/* startDate={startDate} endDate={endDate} categories={categories} */}
+            <div className="fs-3 fw-semibold mt-4 mb-3">Total Expenses: ${totalExpenses.toFixed(2)}</div>
             <ExpenseList expenses={expenses} editExpense={editExpenseHandler} deleteExpense={deleteExpenseHandler} />
           </div>
         </>
