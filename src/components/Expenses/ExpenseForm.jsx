@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 const ExpenseForm = (props) => {
   const amountRef = useRef()
@@ -8,8 +8,6 @@ const ExpenseForm = (props) => {
   let currAmount = "", currCategory = "", currDate = "", currDescription = ""
   const [amountIsValid, setAmountIsValid] = useState(true)
   const [dateIsValid, setDateIsValid] = useState(true)
-  let formIsValid = amountIsValid && dateIsValid
-  let formSubmitted = useRef(false)
 
   if (props.mode === "edit") {
     currAmount = props.expense.amount;
@@ -18,44 +16,43 @@ const ExpenseForm = (props) => {
     currDescription = props.expense.description;
   }
 
-  useEffect(() => {
-    if (formSubmitted.current & formIsValid) {
-      const expenseData = {
-        amount: amountRef.current.value,
-        category: categoryRef.current.value,
-        date: dateRef.current.value,
-        description: descriptionRef.current.value
-      }
-  
-      if (props.mode === "new") {
-        props.createExpense(expenseData)
-      } else if (props.mode === "edit") {
-        props.editExpense(expenseData)
-      }
-  
-      amountRef.current.value = ""
-      categoryRef.current.value = ""
-      dateRef.current.value = ""
-      descriptionRef.current.value = ""
-    }
-    formSubmitted.current = false
-  }, [formSubmitted, formIsValid])
-
   const submitHandler = (e) => {
     e.preventDefault()
-    formSubmitted.current = true
 
     if (amountRef.current.value.length === 0 || +amountRef.current.value < 0) {
       setAmountIsValid(false)
+      if (dateRef.current.value.length === 0) {
+        setDateIsValid(false)
+      } else {
+        setDateIsValid(true)
+      }
+      return
+    } else if (dateRef.current.value.length === 0) {
+      setDateIsValid(false)
+      setAmountIsValid(true)
+      return
     } else {
       setAmountIsValid(true)
-    }
-
-    if (dateRef.current.value.length === 0) {
-      setDateIsValid(false)
-    } else {
       setDateIsValid(true)
     }
+
+    const expenseData = {
+      amount: amountRef.current.value,
+      category: categoryRef.current.value,
+      date: dateRef.current.value,
+      description: descriptionRef.current.value
+    }
+
+    if (props.mode === "new") {
+      props.createExpense(expenseData)
+    } else if (props.mode === "edit") {
+      props.editExpense(expenseData)
+    }
+
+    amountRef.current.value = ""
+    categoryRef.current.value = ""
+    dateRef.current.value = ""
+    descriptionRef.current.value = ""
   }
 
   return (
