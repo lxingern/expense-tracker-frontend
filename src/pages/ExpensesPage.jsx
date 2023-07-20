@@ -17,7 +17,7 @@ const ExpensesPage = () => {
 
   const loadExpenses = useCallback(async () => {
     if (getAuthToken()) {
-      let url = `http://${process.env.HOSTNAME}:8080/expenses?`
+      let url = `http://${process.env.REACT_APP_API_HOSTNAME}:8080/expenses?`
       const queryParams = []
       if (startDate.current && endDate.current) {
         queryParams.push('startDate=' + startDate.current)
@@ -29,7 +29,7 @@ const ExpensesPage = () => {
       if (queryParams.length > 0) {
         url = url + queryParams.join('&')
       }
-      console.log(url)
+
       const response = await fetch(url, {
         headers: {
           'Authorization': 'Bearer ' + getAuthToken()
@@ -58,7 +58,7 @@ const ExpensesPage = () => {
   }, [loadExpenses])
 
   const createExpenseHandler = async (expenseData) => {
-    await fetch(`http://${process.env.HOSTNAME}:8080/expenses`, {
+    await fetch(`http://${process.env.REACT_APP_API_HOSTNAME}:8080/expenses`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ const ExpensesPage = () => {
   }
 
   const editExpenseHandler = async (expenseData) => {
-    await fetch(`http://${process.env.HOSTNAME}:8080/expenses/${expenseData.id}`, {
+    await fetch(`http://${process.env.REACT_APP_API_HOSTNAME}:8080/expenses/${expenseData.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const ExpensesPage = () => {
   }
 
   const deleteExpenseHandler = async (expenseId) => {
-    await fetch(`http://${process.env.HOSTNAME}:8080/expenses/${expenseId}`, {
+    await fetch(`http://${process.env.REACT_APP_API_HOSTNAME}:8080/expenses/${expenseId}`, {
       method: 'DELETE',
       headers: {
         'Authorization': 'Bearer ' + getAuthToken()
