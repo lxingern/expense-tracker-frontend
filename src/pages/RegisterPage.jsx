@@ -22,7 +22,7 @@ export async function action({request}) {
     password: data.get('password')
   }
 
-  const response = await fetch('http://localhost:8080/auth/register', {
+  const response = await fetch(`http://${process.env.HOSTNAME}:8080/auth/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
