@@ -31,7 +31,6 @@ const Filters = (props) => {
       categories: categoryFilter
     }
 
-    console.log(filters)
     props.onFilter(filters)
   }
 

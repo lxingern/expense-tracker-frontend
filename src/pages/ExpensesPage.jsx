@@ -14,9 +14,11 @@ const ExpensesPage = () => {
   const endDate = useRef()
   const categories = useRef()
   const [loaded, setLoaded] = useState(false)
+  const [expensesLoaded, setExpensesLoaded] = useState(false)
 
   const loadExpenses = useCallback(async () => {
     if (getAuthToken()) {
+      setExpensesLoaded(false)
       let url = `http://${process.env.REACT_APP_API_HOSTNAME}:8080/expenses?`
       const queryParams = []
       if (startDate.current && endDate.current) {
@@ -47,6 +49,7 @@ const ExpensesPage = () => {
       endDate.current = resData.endDate
       categories.current = resData.categories
 
+      setExpensesLoaded(true)
       setLoaded(true)
     } else {
       return navigate('/signin')
@@ -109,7 +112,7 @@ const ExpensesPage = () => {
 
   return (
     <>
-      {loaded && (
+      {loaded &&
         <>
           <button className="position-absolute top-0 end-0 me-5 btn btn-dark" onClick={logoutHandler}>Log out</button>
           <div className="custom-container mx-auto">
@@ -117,10 +120,10 @@ const ExpensesPage = () => {
             <ExpenseForm mode="new" createExpense={createExpenseHandler} />
             <Filters startDate={startDate} endDate={endDate} categories={categories} onFilter={filterHandler} />
             <div className="fs-3 fw-semibold mt-4 mb-3">Total Expenses: ${totalExpenses.toFixed(2)}</div>
-            <ExpenseList expenses={expenses} editExpense={editExpenseHandler} deleteExpense={deleteExpenseHandler} />
+            <ExpenseList expenses={expenses} editExpense={editExpenseHandler} deleteExpense={deleteExpenseHandler} loaded={expensesLoaded} />
           </div>
         </>
-      )}
+      }
     </>
   )
 }
