@@ -4,6 +4,7 @@ import ErrorPage from './pages/ErrorPage'
 import SignInPage, { action as signInAction } from './pages/SignInPage';
 import ExpensesPage from './pages/ExpensesPage';
 import RegisterPage, { action as registerAction } from './pages/RegisterPage';
+import BudgetsPage from './pages/BudgetsPage';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: 'expenses',
         element: <ExpensesPage />
+      },
+      {
+        path: 'budgets',
+        element: <BudgetsPage />
       }
     ],
   },

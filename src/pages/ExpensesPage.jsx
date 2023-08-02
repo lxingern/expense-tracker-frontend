@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { getAuthToken } from '../util/auth';
 import { useNavigate } from 'react-router-dom';
 import Filters from '../components/Expenses/Filters';
+import Tabs from '../components/Tabs';
 
 const ExpensesPage = () => {
   const navigate = useNavigate()
@@ -112,6 +113,7 @@ const ExpensesPage = () => {
           <button className="position-absolute top-0 end-0 me-5 btn btn-dark" onClick={logoutHandler}>Log out</button>
           <div className="custom-container mx-auto">
             <h1 className="text-center fs-1 fw-bold my-5">Expense Tracker</h1>
+            <Tabs selected={"expenses"} />
             <ExpenseForm mode="new" createExpense={createExpenseHandler} />
             <Filters startDate={startDate} endDate={endDate} categories={categories} onFilter={filterHandler} />
             <div className="fs-3 fw-semibold mt-4 mb-3">Total Expenses: ${expensesState.totalExpenses.toFixed(2)}</div>
