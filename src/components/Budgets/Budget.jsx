@@ -22,13 +22,13 @@ const Budget = (props) => {
       const month = dayjs().month()
       const year = dayjs().year()
       if (month >= 0 && month <= 2) {
-        period = "1 Jan " + year + " - " + "31 Mar " + year
+        period = "1 Jan " + year + " - 31 Mar " + year
       } else if (month >= 3 && month <= 5) {
-        period = "1 Apr " + year + " - " + "30 Jun " + year
+        period = "1 Apr " + year + " - 30 Jun " + year
       } else if (month >= 6 && month <= 8) {
-        period = "1 Jul " + year + " - " + "30 Sep " + year
+        period = "1 Jul " + year + " - 30 Sep " + year
       } else {
-        period = "1 Oct " + year + " - " + "31 Dec " + year
+        period = "1 Oct " + year + " - 31 Dec " + year
       }
       break;
     case "YEARLY":
