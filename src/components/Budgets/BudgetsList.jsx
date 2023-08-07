@@ -1,15 +1,14 @@
+import Budget from "./Budget"
+
 const BudgetsList = (props) => {
   const budgets = props.budgets
 
   return (
-    <ul>
+    <div>
       {budgets.map(budget => (
-        <li key={budget.id}>
-          ${budget.amount}
-          {budget.timeframe}
-        </li>
+        <Budget budget={budget}/>
       ))}
-    </ul>
+    </div>
   )
 }
 
