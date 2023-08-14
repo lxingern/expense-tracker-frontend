@@ -6,7 +6,10 @@ const BudgetsList = (props) => {
   return (
     <div>
       {budgets.map(budget => (
-        <Budget budget={budget}/>
+        <Budget 
+          key={budget.id} 
+          budget={budget} 
+        />
       ))}
     </div>
   )

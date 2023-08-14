@@ -13,8 +13,8 @@ const BudgetsPage = () => {
     if (getAuthToken()) {
       setBudgetsState({ loaded: false, budgets: [] })
       
-      const url = `http://${process.env.REACT_APP_API_HOSTNAME}:8080/budgets`
-      const response = await fetch(url, {
+      const budgetsUrl = `http://${process.env.REACT_APP_API_HOSTNAME}:8080/budgets`
+      const response = await fetch(budgetsUrl, {
         headers: {
           'Authorization': 'Bearer ' + getAuthToken()
         }
@@ -25,14 +25,14 @@ const BudgetsPage = () => {
       const resData = await response.json()
 
       setBudgetsState({ loaded: true, budgets: resData })
-      setLoaded(true)
     } else {
       return navigate('/signin')
     }
   }, [navigate])
-  
+
   useEffect(() => {
     loadBudgets()
+    setLoaded(true)
   }, [loadBudgets])
 
   const logoutHandler = async () => {
@@ -43,8 +43,8 @@ const BudgetsPage = () => {
   let overallBudgets = []
   let categoryBudgets = []
   if (budgetsState.loaded) {
-    overallBudgets = budgetsState.budgets.filter((budget => budget.type === "Overall"))
-    categoryBudgets = budgetsState.budgets.filter((budget => budget.type === "Category"))
+    overallBudgets = budgetsState.budgets.filter((budget => budget.budget.type === "Overall"))
+    categoryBudgets = budgetsState.budgets.filter((budget => budget.budget.type === "Category"))
   }
 
   return (
