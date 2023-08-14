@@ -47,6 +47,22 @@ const BudgetsPage = () => {
     categoryBudgets = budgetsState.budgets.filter((budget => budget.budget.type === "Category"))
   }
 
+  const deleteBudget = async (budgetId) => {
+    await fetch(`http://${process.env.REACT_APP_API_HOSTNAME}:8080/budgets/${budgetId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Bearer ' + getAuthToken()
+      }
+    })
+
+    setBudgetsState((prevState) => {
+      return {
+        ...prevState,
+        budgets: prevState.budgets.filter(budget => budget.budget.id !== budgetId)
+      }
+    })
+  }
+
   return (
     <>
       {loaded && 
@@ -56,9 +72,9 @@ const BudgetsPage = () => {
             <h1 className="text-center fs-1 fw-bold my-5">Expense Tracker</h1>
             <Tabs selected={"budgets"} />
             <h2 className="text-center fs-3 p-3">Overall</h2>
-            <BudgetsList budgets={overallBudgets} />
+            <BudgetsList budgets={overallBudgets} deleteBudget={deleteBudget} />
             <h2 className="text-center fs-3 p-3">Categories</h2>
-            <BudgetsList budgets={categoryBudgets} />
+            <BudgetsList budgets={categoryBudgets} deleteBudget={deleteBudget} />
           </div>
         </>
       }

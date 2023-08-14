@@ -7,8 +7,9 @@ const BudgetsList = (props) => {
     <div>
       {budgets.map(budget => (
         <Budget 
-          key={budget.id} 
+          key={budget.budget.id} 
           budget={budget} 
+          deleteBudget={props.deleteBudget}
         />
       ))}
     </div>

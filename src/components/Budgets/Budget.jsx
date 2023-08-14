@@ -1,4 +1,6 @@
 import * as dayjs from 'dayjs'
+import { FiEdit } from 'react-icons/fi'
+import { RiDeleteBinLine } from 'react-icons/ri'
 
 const Budget = (props) => {
   const budget = props.budget
@@ -27,6 +29,10 @@ const Budget = (props) => {
       break;
     default:
   }
+
+  const deleteHandler = () => {
+    props.deleteBudget(budget.budget.id)
+  }
   
   return (
     <div className="mb-2 border rounded d-flex justify-content-between p-3 align-items-center">
@@ -38,9 +44,16 @@ const Budget = (props) => {
         </div>
         <p className="mb-0">${budget.expenditure.toFixed(2)} out of ${budget.budget.amount.toFixed(2)} spent</p>
       </div>
-      <div className="fs-1">
-        {budget.utilization.toFixed(1)}%
+      <div className="d-flex">
+        <div className="fs-1 me-3">
+          {budget.utilization.toFixed(1)}%
+        </div>
+        <div className="d-flex flex-column justify-content-center">
+          <button className="btn fs-6 p-0 text-warning"><FiEdit className="" /></button>
+          <button className="btn fs-6 p-0 text-danger" onClick={deleteHandler}><RiDeleteBinLine /></button>
+        </div>
       </div>
+      
     </div>
   )
 }
