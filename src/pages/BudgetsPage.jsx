@@ -10,7 +10,6 @@ const BudgetsPage = () => {
   const [budgetsState, setBudgetsState] = useState({})
   const [loaded, setLoaded] = useState(false)
   const [budgetForm, setBudgetForm] = useState({ showForm: false, errorMsg: "" })
-  // const [budgetFormError, setBudgetFormError] = useState("")
 
   const loadBudgets = useCallback(async () => {
     if (getAuthToken()) {
